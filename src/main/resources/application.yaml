@@ -1,0 +1,8 @@
+app:
+    chat_id: 12345678
+    force_send: true
+
+telegram:
+    name: StarCraft Poll
+    username: username
+    token: token
