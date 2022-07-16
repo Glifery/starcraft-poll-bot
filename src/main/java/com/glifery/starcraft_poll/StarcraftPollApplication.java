@@ -6,7 +6,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.event.EventListener;
+
+import java.util.function.Function;
 
 @SpringBootApplication
 @RequiredArgsConstructor
@@ -17,6 +20,11 @@ public class StarcraftPollApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(StarcraftPollApplication.class, args);
+	}
+
+	@Bean
+	public Function<String, Boolean> containsCloud() {
+		return value -> value.contains("cloud");
 	}
 
 	@EventListener(ApplicationReadyEvent.class)
