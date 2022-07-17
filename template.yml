@@ -20,6 +20,7 @@ Resources:
       Environment:
         Variables:
           app_chat_id: 494415653
+          app_force_send: false
           telegram_token: token
           telegram_username: username
       Events:
