@@ -1,6 +1,6 @@
 app:
     chat_id: 12345678
-    force_send: true
+    force_send: false
 
 telegram:
     name: StarCraft Poll

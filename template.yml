@@ -11,7 +11,7 @@ Resources:
   StarCraftPollFunction:
     Type: AWS::Serverless::Function
     Properties:
-      Handler: com.glifery.starcraft_poll.LambdaHandler::handleRequest
+      Handler: com.glifery.starcraft_poll.StarcraftPollHandler::handleRequest
       Runtime: java11
       CodeUri: .
       MemorySize: 1512
