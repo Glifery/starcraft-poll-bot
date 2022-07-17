@@ -1,0 +1,37 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: StarCraft Poll Lambda
+
+Globals:
+  Api:
+    # API Gateway regional endpoints
+    EndpointConfiguration: REGIONAL
+
+Resources:
+  StarCraftPollFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: com.glifery.starcraft_poll.LambdaHandler::handleRequest
+      Runtime: java11
+      CodeUri: .
+      MemorySize: 1512
+      Policies: AWSLambdaBasicExecutionRole
+      Timeout: 60
+      Environment:
+        Variables:
+          app_chat_id: 494415653
+          telegram_token: token
+          telegram_username: username
+      Events:
+        ScheduleOnceADay:
+          Type: Schedule
+          Properties:
+            Schedule: 'cron(0 12 * * ? *)'
+            Name: ScheduleOnceADay
+            Enabled: true
+        ScheduleEveryMinute:
+          Type: Schedule
+          Properties:
+            Schedule: 'rate(1 minute)'
+            Name: ScheduleEveryMinute
+            Enabled: true
