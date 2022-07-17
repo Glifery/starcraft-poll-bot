@@ -1,0 +1,1 @@
+StarCraft Poll Telegram bot for AWS Lambda
