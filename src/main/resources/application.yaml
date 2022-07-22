@@ -1,4 +1,4 @@
-app:
+poll:
     chat_id: 12345678
     force_send: false
 
