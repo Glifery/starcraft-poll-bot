@@ -1,17 +1,17 @@
-package com.glifery.starcraft_poll;
+package com.glifery.starcraftpollbot.lambda;
 
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
+import com.glifery.starcraftpollbot.Application;
 import org.springframework.boot.SpringApplication;
 
-public class StarcraftPollHandler implements RequestHandler<Object, Object> {
+public class StarCraftPollRequestHandler implements RequestHandler<Object, String> {
 
     @Override
-    public Object handleRequest(Object s, Context context) {
+    public String handleRequest(Object s, Context context) {
         context.getLogger().log("Start lambda with input: " + s);
-
-        SpringApplication.run(StarcraftPollApplication.class);
-
+        SpringApplication.run(Application.class);
         return "End lambda successfully";
     }
+
 }
