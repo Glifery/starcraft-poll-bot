@@ -23,7 +23,7 @@ public class TelegramBotRunner implements ApplicationRunner {
     public void run(ApplicationArguments args) {
         ZoneId minskZoneId = ZoneId.of(MINSK_TIME_OFFSET);
         LocalDate now = LocalDate.now(minskZoneId);
-        List<String> options = pollService.getOptions(now);
+        List<String> options = pollService.getOptions(now.getDayOfWeek());
         if (!options.isEmpty()) {
             telegramBotService.sendPoll(options);
         }

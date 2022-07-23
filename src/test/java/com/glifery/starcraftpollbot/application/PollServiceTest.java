@@ -1,59 +1,70 @@
 package com.glifery.starcraftpollbot.application;
 
+import com.glifery.starcraftpollbot.config.property.PollProperties;
 import com.glifery.starcraftpollbot.service.PollService;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EnumSource;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.time.DayOfWeek;
 import java.util.List;
-import java.util.Optional;
 
-public class PollServiceTest {
-    PollService provider;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.doReturn;
 
-    @BeforeEach
-    public void setup() {
-        provider = new PollService();
+@ExtendWith(MockitoExtension.class)
+class PollServiceTest {
+
+    private static final List<String> WEDNESDAY_OPTIONS = List.of("20:00", "20:30", "21:00", "Monday");
+
+    @Mock
+    private PollProperties pollProperties;
+    @InjectMocks
+    private PollService pollService;
+
+    @ParameterizedTest
+    @EnumSource(value = DayOfWeek.class, names = {"MONDAY", "TUESDAY", "WEDNESDAY"})
+    void getOptions_shouldReturnOptions_whenGameDay(DayOfWeek dayOfWeek) {
+        //given
+        //when
+        List<String> actual = pollService.getOptions(dayOfWeek);
+        //then
+        assertFalse(actual.isEmpty());
+    }
+
+    @ParameterizedTest
+    @EnumSource(value = DayOfWeek.class, names = {"THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"})
+    void getOptions_shouldReturnEmpty_whenNotGameDay(DayOfWeek dayOfWeek) {
+        //given
+        //when
+        List<String> actual = pollService.getOptions(dayOfWeek);
+        //then
+        assertTrue(actual.isEmpty());
     }
 
     @Test
-    public void shouldReturnEmpty() throws ParseException {
-        Date date = (new SimpleDateFormat("yyyy-MM-dd")).parse("2022-07-15");
-        Optional<List<String>> options = provider.getOptions(date, false);
-        Assertions.assertEquals(Optional.empty(), options);
+    void getOptions_shouldReturnOptions_whenForceSend() {
+        //given
+        doReturn(Boolean.TRUE).when(pollProperties).getForceSend();
+        //when
+        List<String> actual = pollService.getOptions(DayOfWeek.THURSDAY);
+        //then
+        assertFalse(actual.isEmpty());
     }
 
     @Test
-    public void shouldReturnNotEmptyForced() throws ParseException {
-        Date date = (new SimpleDateFormat("yyyy-MM-dd")).parse("2022-07-15");
-        Optional<List<String>> options = provider.getOptions(date, true);
-        Assertions.assertEquals(3, options.get().size());
+    void getOptions_shouldReturnMondayOption_whenWednesday() {
+        //given
+        //when
+        List<String> actual = pollService.getOptions(DayOfWeek.WEDNESDAY);
+        //then
+        assertEquals(WEDNESDAY_OPTIONS, actual);
     }
 
-    @Test
-    public void shouldReturnOptionTomorrowOnMon() throws ParseException {
-        Date date = (new SimpleDateFormat("yyyy-MM-dd")).parse("2022-07-11");
-        Optional<List<String>> options = provider.getOptions(date, false);
-        Assertions.assertEquals(4, options.get().size());
-        Assertions.assertEquals("tomorrow", options.get().get(3));
-    }
-
-    @Test
-    public void shouldReturnOptionTomorrowOnTue() throws ParseException {
-        Date date = (new SimpleDateFormat("yyyy-MM-dd")).parse("2022-07-12");
-        Optional<List<String>> options = provider.getOptions(date, false);
-        Assertions.assertEquals(4, options.get().size());
-        Assertions.assertEquals("tomorrow", options.get().get(3));
-    }
-
-    @Test
-    public void shouldReturnOptionMondayOnWed() throws ParseException {
-        Date date = (new SimpleDateFormat("yyyy-MM-dd")).parse("2022-07-13");
-        Optional<List<String>> options = provider.getOptions(date, false);
-        Assertions.assertEquals(4, options.get().size());
-        Assertions.assertEquals("monday", options.get().get(3));
-    }
 }
