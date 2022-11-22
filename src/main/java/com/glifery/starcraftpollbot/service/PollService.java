@@ -33,7 +33,7 @@ public class PollService {
         }
         var forceSend = pollProperties.getForceSend();
         if (Boolean.TRUE.equals(forceSend)) {
-            return pollProperties.getTimesList();
+            return pollProperties.getTimes();
         }
         return Collections.emptyList();
     }
@@ -41,7 +41,7 @@ public class PollService {
     private List<String> getGameDayOptions(DayOfWeek dayOfWeek) {
         DayOfWeek nextPlayingDay = this.getNextPlayingDay(dayOfWeek);
         String nextDayName = nextPlayingDay.getDisplayName(TextStyle.FULL, Locale.ENGLISH);
-        return Stream.concat(pollProperties.getTimesList().stream(), Stream.of(nextDayName))
+        return Stream.concat(pollProperties.getTimes().stream(), Stream.of(nextDayName))
                 .collect(Collectors.toUnmodifiableList());
     }
 
