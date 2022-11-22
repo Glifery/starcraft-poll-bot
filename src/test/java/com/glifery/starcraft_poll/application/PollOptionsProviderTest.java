@@ -1,6 +1,7 @@
 package com.glifery.starcraft_poll.application;
 
 import com.glifery.starcraft_poll.application.PollOptionsProvider;
+import com.glifery.starcraft_poll.config.App;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -16,7 +17,7 @@ public class PollOptionsProviderTest {
 
     @BeforeEach
     public void setup() {
-        provider = new PollOptionsProvider();
+        provider = new PollOptionsProvider(new App());
     }
 
     @Test
