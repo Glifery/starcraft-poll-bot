@@ -1,6 +1,7 @@
 poll:
     chat_id: 12345678
     force_send: false
+    times: "19:00|19:30|20:00|20:30|21:00"
 
 telegram:
     name: StarCraft Poll

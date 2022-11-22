@@ -51,6 +51,7 @@ class PollServiceTest {
     @Test
     void getOptions_shouldReturnOptions_whenForceSend() {
         //given
+        doReturn(List.of("20:00", "20:30", "21:00")).when(pollProperties).getTimes();
         doReturn(Boolean.TRUE).when(pollProperties).getForceSend();
         //when
         List<String> actual = pollService.getOptions(DayOfWeek.THURSDAY);
@@ -61,6 +62,7 @@ class PollServiceTest {
     @Test
     void getOptions_shouldReturnMondayOption_whenWednesday() {
         //given
+        doReturn(List.of("20:00", "20:30", "21:00")).when(pollProperties).getTimes();
         //when
         List<String> actual = pollService.getOptions(DayOfWeek.WEDNESDAY);
         //then

@@ -24,8 +24,6 @@ public class PollService {
             DayOfWeek.TUESDAY,
             DayOfWeek.WEDNESDAY
     );
-    private final static List<String> COMMON_OPTIONS = List.of("20:00", "20:30", "21:00");
-
     private final PollProperties pollProperties;
 
 
@@ -35,7 +33,7 @@ public class PollService {
         }
         var forceSend = pollProperties.getForceSend();
         if (Boolean.TRUE.equals(forceSend)) {
-            return COMMON_OPTIONS;
+            return pollProperties.getTimes();
         }
         return Collections.emptyList();
     }
@@ -43,7 +41,7 @@ public class PollService {
     private List<String> getGameDayOptions(DayOfWeek dayOfWeek) {
         DayOfWeek nextPlayingDay = this.getNextPlayingDay(dayOfWeek);
         String nextDayName = nextPlayingDay.getDisplayName(TextStyle.FULL, Locale.ENGLISH);
-        return Stream.concat(COMMON_OPTIONS.stream(), Stream.of(nextDayName))
+        return Stream.concat(pollProperties.getTimes().stream(), Stream.of(nextDayName))
                 .collect(Collectors.toUnmodifiableList());
     }
 
